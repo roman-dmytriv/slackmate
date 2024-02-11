@@ -1,0 +1,5 @@
+Flask==3.0.2
+flask-swagger-ui==4.11.1
+requests==2.31.0
+slack_sdk==3.26.2
+Flask-WTF==1.2.1
