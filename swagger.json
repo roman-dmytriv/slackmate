@@ -1,0 +1,164 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Slack API",
+      "version": "1.0.0",
+      "description": "API documentation for Slack integration"
+    },
+    "servers": [
+      {
+        "url": "http://127.0.0.1:5000"
+      }
+    ],
+    "paths": {
+      "/users": {
+        "get": {
+          "summary": "Get Slack users",
+          "tags": ["Slack"],
+          "responses": {
+            "200": {
+              "description": "List of Slack users",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "User ID"
+                        },
+                        "name": {
+                          "type": "string",
+                          "description": "User name"
+                        },
+                        "real_name": {
+                          "type": "string",
+                          "description": "User real name"
+                        },
+                        "team_id": {
+                          "type": "string",
+                          "description": "ID of the team to which the user belongs"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "Error message"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/send_message": {
+        "post": {
+          "summary": "Send a message on Slack",
+          "tags": ["Slack"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "channel_id": {
+                      "type": "string",
+                      "description": "ID of the channel to which the message will be sent"
+                    },
+                    "message_text": {
+                      "type": "string",
+                      "description": "Text of the message to be sent"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Message sent successfully",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "channel": {
+                        "type": "string",
+                        "description": "ID of the channel where the message was sent"
+                      },
+                      "message": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string",
+                            "description": "Text of the message sent"
+                          }
+                        }
+                      },
+                      "ok": {
+                        "type": "boolean",
+                        "description": "Indicates if the message was sent successfully"
+                      },
+                      "ts": {
+                        "type": "string",
+                        "description": "Timestamp of when the message was sent"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Bad request",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "Error message"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "500": {
+              "description": "Internal server error",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "error": {
+                        "type": "string",
+                        "description": "Error message"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
