@@ -90,8 +90,6 @@ def test_send_message_success(client):
         payload = {'channel_id': 'channel1', 'message_text': 'Hello World!'}
         response = client.post('/send_message', json=payload)
 
-        print(json.loads(response.data))
-
         # Checking if the response status code is 200
         assert response.status_code == 200
 
@@ -111,8 +109,6 @@ def test_send_message_failure(client):
         # Sending a POST request to the endpoint
         payload = {'channel_id': 'channel1', 'message_text': 'Hello World!'}
         response = client.post('/send_message', json=payload)
-
-        print(json.loads(response.data))
 
         # Checking if the response status code is 500
         assert response.status_code == 500
