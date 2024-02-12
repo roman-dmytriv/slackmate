@@ -14,6 +14,10 @@ Before running the Slack Mate app, ensure you have the following dependencies in
 
 ## Installation
 
+### Virtual Environment
+
+To manage Python dependencies and isolate them from your system-wide Python installation, it's recommended to use a virtual environment. Here's how you can create a virtual environment for this project:
+
 1. **Clone the repository:**
 
    ```bash
@@ -24,7 +28,12 @@ Before running the Slack Mate app, ensure you have the following dependencies in
     ```bash
     cd slack_mate
 
-3. **Istall dependencies using pip:**
+3. **Create the Virtual Environment:**
+
+   ```bash
+   python3 -m venv venv
+
+4. **Istall dependencies using pip:**
 
     ```bash
     pip install -r requirements.txt
@@ -66,6 +75,38 @@ The app will start running on `http://localhost:5000` by default.
     }
 
 Replace `"your_channel_id"` with the ID of the channel you want to send the message to, and `"Your message text here"` with the text of the message you want to send.
+
+## Running Tests
+
+1. To run the tests, execute the following command from the project root directory:
+
+    ```bash
+    pytest
+    ```
+
+This command will discover and run all the test cases in the project. You should see the test results displayed in the terminal.
+
+## Additional Options
+
+You can specify additional options to pytest, such as filtering tests by keywords or running tests in parallel. Refer to the pytest documentation for more information on available options.
+
+## Testing Strategy
+
+### Integration Testing
+
+We rely on integration tests to verify the interactions between different parts of our application, ensuring they work together seamlessly.
+
+#### Approach
+  
+- **API Testing:** Validates API endpoints to ensure they return the expected responses for various inputs and scenarios.
+
+- **Mocking Dependencies:** Simulates the behavior of external dependencies using mocks to make our tests more predictable and reliable.
+
+### Tools Used
+
+- **Pytest:** Our preferred testing framework for writing and running integration tests in Python.
+
+- **Mocking Libraries:** Leveraged to mock external dependencies and control their behavior during testing.
 
 ## Contributing
 
