@@ -1,11 +1,12 @@
 import logging
+
 import requests
 from flask import Blueprint, jsonify, request
 from slack_sdk import WebClient
-from slack_sdk.oauth.installation_store import FileInstallationStore
 from slack_sdk.errors import SlackApiError
+from slack_sdk.oauth.installation_store import FileInstallationStore
 
-from slack_mate.app.config import Config
+from app.config import Config
 
 log = logging.getLogger(__name__)
 

@@ -1,5 +1,3 @@
-# app/config.py
-
 import secrets
 
 

@@ -1,13 +1,13 @@
 import os
-from flask import Blueprint, redirect, request, jsonify, make_response, session
+
+from flask import Blueprint, jsonify, make_response, redirect, request, session
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
 from slack_sdk.oauth import AuthorizeUrlGenerator
 from slack_sdk.oauth.installation_store import FileInstallationStore
-from slack_sdk.errors import SlackApiError
-from slack_sdk.web.slack_response import SlackResponse
 from slack_sdk.oauth.installation_store.models import Installation
-from slack_sdk import WebClient
 
-from slack_mate.app.config import Config
+from app.config import Config
 
 # Define the blueprint for the Slack authentication routes
 slack_auth_bp = Blueprint('auth', __name__)
@@ -58,7 +58,7 @@ def slack_auth_callback():
                 "error": "Authentication failed: No response from Slack API."
             }), 500)
 
-        if isinstance(auth_result, SlackResponse | dict) and auth_result["ok"]:
+        if isinstance(auth_result, dict) and auth_result["ok"]:
             # Store the installation data (access token, bot user ID, etc.)
             installation = Installation(
                 team_id=auth_result['team']['id'],
