@@ -1,18 +1,34 @@
-import pytest
 import json
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
+
+import pytest
 from flask import Flask
-from slack_mate.app.api.channels import slack_api_bp
+
+from app.api.channels import slack_api_bp
 
 
 @pytest.fixture
-def client():
+def mock_get_installation():
+    with patch('app.api.channels.get_installation') as mock_get_installation:
+        yield mock_get_installation
+
+
+@pytest.fixture
+def client(mock_get_installation):
     # Create a test Flask app
     app = Flask(__name__)
     app.config['TESTING'] = True
     app.register_blueprint(slack_api_bp)
-    with app.test_client() as client:
-        yield client
+
+    # Patch the get_installation function with the mock
+    with patch('app.api.channels.get_installation') as mock_get_installation:
+        # Mocking the installation and access token
+        mock_installation = MagicMock()
+        mock_installation.bot_token = 'mock_bot_token'
+        mock_get_installation.return_value = mock_installation
+
+        with app.test_client() as client:
+            yield client
 
 
 class MockResponse:
@@ -25,10 +41,10 @@ class MockResponse:
         return self._json_data
 
 
-def test_get_slack_users_success(client):
+def test_get_slack_users_success(client, mock_get_installation):
     # Mocking the WebClient and its users_list method
     with patch(
-        'slack_mate.app.api.channels.slack_client.users_list'
+        'app.api.channels.slack_client.users_list'
     ) as mock_users_list:
         # Mocking a successful response from the Slack API
         mock_users_list.return_value = {
@@ -60,7 +76,7 @@ def test_get_slack_users_success(client):
 def test_get_slack_users_failure(client):
     # Mocking the WebClient and its users_list method to simulate a failure
     with patch(
-        'slack_mate.app.api.channels.slack_client.users_list'
+        'app.api.channels.slack_client.users_list'
     ) as mock_users_list:
         # Mocking a failure response from the Slack API
         mock_users_list.return_value = {
@@ -80,7 +96,7 @@ def test_get_slack_users_failure(client):
 
 def test_send_message_success(client):
     # Mocking the requests.post method
-    with patch('slack_mate.app.api.channels.requests.post') as mock_post:
+    with patch('app.api.channels.requests.post') as mock_post:
         # Mocking a successful response from the Slack API
         mock_response = MockResponse({
             'message': 'Message sent successfully'}, 200, True)
@@ -100,7 +116,7 @@ def test_send_message_success(client):
 
 def test_send_message_failure(client):
     # Mocking the requests.post method to simulate a failure
-    with patch('slack_mate.app.api.channels.requests.post') as mock_post:
+    with patch('app.api.channels.requests.post') as mock_post:
         # Mocking a failure response from the Slack API
         mock_response = MockResponse({
             'error': 'Failed to send message'}, 500, False)

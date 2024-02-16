@@ -1,7 +1,6 @@
-# app/__init__.py
-
 from flask import Flask
 from flask_wtf.csrf import CSRFProtect
+
 from .config import Config
 
 csrf = CSRFProtect()

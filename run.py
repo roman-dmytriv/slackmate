@@ -1,11 +1,11 @@
-# run.py
-
 import os
+
 from flask import Flask, send_from_directory
-from app.auth.oauth import slack_auth_bp
-from app.api.channels import slack_api_bp
-from app.config import Config
 from flask_swagger_ui import get_swaggerui_blueprint
+
+from app.api.channels import slack_api_bp
+from app.auth.oauth import slack_auth_bp
+from app.config import Config
 
 app = Flask(__name__)
 
